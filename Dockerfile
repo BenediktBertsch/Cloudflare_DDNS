@@ -4,7 +4,7 @@ ENV token=""
 ENV mail=""
 ENV zone=""
 ENV domain=""
-ENV proxied=""
+ENV proxied=false
 ENV interval=5
 
 WORKDIR /nodeapp
