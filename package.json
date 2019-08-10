@@ -1,0 +1,26 @@
+{
+  "name": "ddns",
+  "version": "1.0.0",
+  "description": "cloudflare dddns updater",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BenediktBertsch/cloudflare_ddns.git"
+  },
+  "keywords": [
+    "cloudflare",
+    "ddns"
+  ],
+  "author": "Benedikt Bertsch",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BenediktBertsch/cloudflare_ddns/issues"
+  },
+  "homepage": "https://github.com/BenediktBertsch/cloudflare_ddns#readme",
+  "dependencies": {
+    "request": "^2.88.0"
+  }
+}
