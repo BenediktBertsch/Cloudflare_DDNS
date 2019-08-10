@@ -7,7 +7,6 @@ zone_identifier = process.env.zone;
 domain = process.env.domain;
 proxied = process.env.proxied;  //True od. False
 intervalmin = process.env.interval;
-
 //Update DNS Entry
 setInterval(() => {
     var options = {
