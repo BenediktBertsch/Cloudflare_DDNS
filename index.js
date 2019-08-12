@@ -66,7 +66,7 @@ setInterval(() => {
                         console.log('A Record Updated...')
                     })
                 }
-                else if (ipv6active == true) {
+                else if (ipv6active == 'true') {
                     console.log(new Date().toLocaleString('de-DE', {hour12: false}) + ' Checking IPv6...');
                     var options = {
                         method: 'GET',
