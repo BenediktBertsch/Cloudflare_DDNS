@@ -79,37 +79,33 @@ setInterval(() => {
                             console.log('A Record Updated...')
                         })
                     }
-                    else if (ipv6active == 'true') {
-
-                        if (dnsentry.type == 'AAAA' && dnsentry.content != ipv6) {
-                            console.log(dnsentry.content)
-                            console.log(ipv6)
-                            options = {
-                                method: 'PUT',
-                                url: 'https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/' + dnsentry.id,
-                                headers:
-                                {
-                                    Host: 'api.cloudflare.com',
-                                    'X-Auth-Key': api_token,
-                                    'X-Auth-Email': mail_address,
-                                    'Content-Type': 'application/json'
-                                },
-                                body:
-                                {
-                                    type: 'AAAA',
-                                    name: domain,
-                                    content: ipv6,
-                                    ttl: intervalmin * 60,
-                                    proxied: proxied
-                                },
-                                json: true
-                            };
-                            request(options, function (error, response, body) {
-                                if (error) throw new Error(error);
-                                console.log(body);
-                                console.log('AAAA Record Updated...')
-                            })
-                        }
+                    else if (ipv6active == 'true' && dnsentry.type == 'AAAA' && dnsentry.content != ipv6) {
+                        console.log(dnsentry.id)
+                        options = {
+                            method: 'PUT',
+                            url: 'https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/' + dnsentry.id,
+                            headers:
+                            {
+                                Host: 'api.cloudflare.com',
+                                'X-Auth-Key': api_token,
+                                'X-Auth-Email': mail_address,
+                                'Content-Type': 'application/json'
+                            },
+                            body:
+                            {
+                                type: 'AAAA',
+                                name: domain,
+                                content: ipv6,
+                                ttl: intervalmin * 60,
+                                proxied: proxied
+                            },
+                            json: true
+                        };
+                        request(options, function (error, response, body) {
+                            if (error) throw new Error(error);
+                            console.log(body);
+                            console.log('AAAA Record Updated...')
+                        })
                     }
                 })
             });
