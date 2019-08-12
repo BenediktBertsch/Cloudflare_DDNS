@@ -22,7 +22,7 @@ if(proxied == 'true'){
 if(intervalmin < 2){
     intervalmin = 2;
 }
-//setInterval(() => {
+setInterval(() => {
     if (ipv6active == 'true') {
         console.log(new Date().toLocaleString('de-DE', { hour12: false }) + ' Checking IPv4 and IPv6...');
     } else {
@@ -123,4 +123,4 @@ if(intervalmin < 2){
         })
 
     });
-//}, intervalmin * 1000 * 60);
+}, intervalmin * 1000 * 60);
