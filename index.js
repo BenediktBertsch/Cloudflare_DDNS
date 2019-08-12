@@ -15,7 +15,11 @@ intervalmin = process.env.interval;
 ipv6active = process.env.ipv6activate;
 //Update DNS Entry
 setInterval(() => {
-    console.log(new Date().toLocaleString('de-DE', {hour12: false}) + ' Checking IPv4...');
+    if (ipv6activate == 'true') {
+        console.log(new Date().toLocaleString('de-DE', { hour12: false }) + ' Checking IPv4 and IPv6...');
+    } else {
+        console.log(new Date().toLocaleString('de-DE', { hour12: false }) + ' Checking IPv4...');
+    }
     var options = {
         method: 'GET',
         url: 'https://v4.ident.me/'
@@ -23,58 +27,58 @@ setInterval(() => {
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
         ipv4 = body;
-        options = {
+        var options = {
             method: 'GET',
-            url: 'https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records',
-            headers:
-            {
-                Host: 'api.cloudflare.com',
-                'X-Auth-Key': api_token,
-                'X-Auth-Email': mail_address,
-                'Content-Type': 'application/json'
-            }
-        };
+            url: 'https://v6.ident.me/'
+        }
         request(options, function (error, response, body) {
             if (error) throw new Error(error);
-            dns = JSON.parse(body);
-            dnsarray = dns.result;
-            dnsarray.forEach(function (dnsentry) {
-                if (dnsentry.type == 'A' && dnsentry.content != ipv4) {
-                    options = {
-                        method: 'PUT',
-                        url: 'https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/' + dnsentry.id,
-                        headers:
-                        {
-                            Host: 'api.cloudflare.com',
-                            'X-Auth-Key': api_token,
-                            'X-Auth-Email': mail_address,
-                            'Content-Type': 'application/json'
-                        },
-                        body:
-                        {
-                            type: 'A',
-                            name: domain,
-                            content: ipv4,
-                            ttl: intervalmin * 60,
-                            proxied: proxied
-                        },
-                        json: true
-                    };
-                    request(options, function (error, response, body) {
-                        if (error) throw new Error(error);
-                        console.log(body);
-                        console.log('A Record Updated...')
-                    })
+            ipv6 = body;
+            options = {
+                method: 'GET',
+                url: 'https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records',
+                headers:
+                {
+                    Host: 'api.cloudflare.com',
+                    'X-Auth-Key': api_token,
+                    'X-Auth-Email': mail_address,
+                    'Content-Type': 'application/json'
                 }
-                else if (ipv6active == 'true') {
-                    console.log(new Date().toLocaleString('de-DE', {hour12: false}) + ' Checking IPv6...');
-                    var options = {
-                        method: 'GET',
-                        url: 'https://v6.ident.me/'
+            };
+            request(options, function (error, response, body) {
+                if (error) throw new Error(error);
+                dns = JSON.parse(body);
+                dnsarray = dns.result;
+                dnsarray.forEach(function (dnsentry) {
+                    if (dnsentry.type == 'A' && dnsentry.content != ipv4) {
+                        options = {
+                            method: 'PUT',
+                            url: 'https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/' + dnsentry.id,
+                            headers:
+                            {
+                                Host: 'api.cloudflare.com',
+                                'X-Auth-Key': api_token,
+                                'X-Auth-Email': mail_address,
+                                'Content-Type': 'application/json'
+                            },
+                            body:
+                            {
+                                type: 'A',
+                                name: domain,
+                                content: ipv4,
+                                ttl: intervalmin * 60,
+                                proxied: proxied
+                            },
+                            json: true
+                        };
+                        request(options, function (error, response, body) {
+                            if (error) throw new Error(error);
+                            console.log(body);
+                            console.log('A Record Updated...')
+                        })
                     }
-                    request(options, function (error, response, body) {
-                        if (error) throw new Error(error);
-                        ipv6 = body;
+                    else if (ipv6active == 'true') {
+
                         if (dnsentry.type == 'AAAA' && dnsentry.content != ipv6) {
                             options = {
                                 method: 'PUT',
@@ -102,9 +106,10 @@ setInterval(() => {
                                 console.log('AAAA Record Updated...')
                             })
                         }
-                    })
-                }
-            })
-        });
+                    }
+                })
+            });
+        })
+
     });
 }, intervalmin * 1000 * 60);
