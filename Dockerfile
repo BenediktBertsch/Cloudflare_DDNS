@@ -4,9 +4,9 @@ ENV token = ""
 ENV mail = ""
 ENV zone = ""
 ENV domain = ""
-ENV proxied = false
-ENV interval = 5
-ENV ipv6activate = false
+ENV proxied = 
+ENV interval = 
+ENV ipv6activate = 
 
 WORKDIR /nodeapp
 COPY package.json /nodeapp

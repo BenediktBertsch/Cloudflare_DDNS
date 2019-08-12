@@ -15,7 +15,7 @@ intervalmin = process.env.interval;
 ipv6active = process.env.ipv6activate;
 //Update DNS Entry
 setInterval(() => {
-    console.log('Checking IPv4...');
+    console.log(new Date().toLocaleString('de-DE', {hour12: false}) + ' Checking IPv4...');
     var options = {
         method: 'GET',
         url: 'https://v4.ident.me/'
@@ -67,7 +67,7 @@ setInterval(() => {
                     })
                 }
                 else if (ipv6active == true) {
-                    console.log('Checking IPv6...');
+                    console.log(new Date().toLocaleString('de-DE', {hour12: false}) + ' Checking IPv6...');
                     var options = {
                         method: 'GET',
                         url: 'https://v6.ident.me/'
