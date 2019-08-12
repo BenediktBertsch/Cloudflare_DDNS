@@ -51,6 +51,8 @@ setInterval(() => {
                 dnsarray = dns.result;
                 dnsarray.forEach(function (dnsentry) {
                     if (dnsentry.type == 'A' && dnsentry.content != ipv4) {
+                        console.log(dnsentry.content)
+                        console.log(ipv4)
                         options = {
                             method: 'PUT',
                             url: 'https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/' + dnsentry.id,
@@ -80,6 +82,8 @@ setInterval(() => {
                     else if (ipv6active == 'true') {
 
                         if (dnsentry.type == 'AAAA' && dnsentry.content != ipv6) {
+                            console.log(dnsentry.content)
+                            console.log(ipv6)
                             options = {
                                 method: 'PUT',
                                 url: 'https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/' + dnsentry.id,
