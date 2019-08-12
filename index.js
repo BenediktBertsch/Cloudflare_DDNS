@@ -14,7 +14,15 @@ intervalmin = parseInt(process.env.interval, 10);
 //IPv6
 ipv6active = process.env.ipv6activate;
 //Update DNS Entry
-setInterval(() => {
+if(proxied == 'true'){
+    proxied = true;
+}else{
+    proxied = false;
+}
+if(intervalmin < 2){
+    intervalmin = 2;
+}
+//setInterval(() => {
     if (ipv6active == 'true') {
         console.log(new Date().toLocaleString('de-DE', { hour12: false }) + ' Checking IPv4 and IPv6...');
     } else {
@@ -51,8 +59,6 @@ setInterval(() => {
                 dnsarray = dns.result;
                 dnsarray.forEach(function (dnsentry) {
                     if (dnsentry.type == 'A' && dnsentry.content != ipv4) {
-                        console.log(dnsentry.content)
-                        console.log(ipv4)
                         options = {
                             method: 'PUT',
                             url: 'https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/' + dnsentry.id,
@@ -68,19 +74,21 @@ setInterval(() => {
                                 type: 'A',
                                 name: domain,
                                 content: ipv4,
-                                ttl: intervalmin * 60,
+                                ttl: intervalmin*60,
                                 proxied: proxied
                             },
                             json: true
                         };
                         request(options, function (error, response, body) {
                             if (error) throw new Error(error);
-                            console.log(body);
-                            console.log('A Record Updated...')
+                            if(body.errors[0] == undefined){
+                                console.log('A Record Updated...');
+                            }else{
+                                console.log(body.errors[0]);
+                            }
                         })
                     }
                     else if (ipv6active == 'true' && dnsentry.type == 'AAAA' && dnsentry.content != ipv6) {
-                        console.log(dnsentry.id)
                         options = {
                             method: 'PUT',
                             url: 'https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/' + dnsentry.id,
@@ -96,15 +104,18 @@ setInterval(() => {
                                 type: 'AAAA',
                                 name: domain,
                                 content: ipv6,
-                                ttl: intervalmin * 60,
+                                ttl: intervalmin*60,
                                 proxied: proxied
                             },
                             json: true
                         };
                         request(options, function (error, response, body) {
                             if (error) throw new Error(error);
-                            console.log(body);
-                            console.log('AAAA Record Updated...')
+                            if(body.errors[0] == undefined){
+                                console.log('AAAA Record Updated...');
+                            }else{
+                                console.log(body.errors[0]);
+                            }
                         })
                     }
                 })
@@ -112,4 +123,4 @@ setInterval(() => {
         })
 
     });
-}, intervalmin * 1000 * 60);
+//}, intervalmin * 1000 * 60);
