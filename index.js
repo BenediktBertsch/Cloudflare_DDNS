@@ -10,12 +10,12 @@ mail_address = process.env.mail;
 zone_identifier = process.env.zone;
 domain = process.env.domain;
 proxied = process.env.proxied;
-intervalmin = process.env.interval;
+intervalmin = parseInt(process.env.interval, 10);
 //IPv6
 ipv6active = process.env.ipv6activate;
 //Update DNS Entry
 setInterval(() => {
-    if (ipv6activate == 'true') {
+    if (ipv6active == 'true') {
         console.log(new Date().toLocaleString('de-DE', { hour12: false }) + ' Checking IPv4 and IPv6...');
     } else {
         console.log(new Date().toLocaleString('de-DE', { hour12: false }) + ' Checking IPv4...');
