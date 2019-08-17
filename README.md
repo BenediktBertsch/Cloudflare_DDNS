@@ -1,4 +1,9 @@
 # Cloudflare DDNS Client
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/BenediktBertsch/Cloudflare_DDNS/master/logo.png" width="150">
+</p>
+
 ## About
 An NodeJS application to update your A and AAAA DNS records.
 
