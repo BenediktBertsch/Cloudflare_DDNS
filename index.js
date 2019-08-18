@@ -33,14 +33,14 @@ setInterval(() => {
         url: 'https://v4.ident.me/'
     }
     request(options, function (error, response, body) {
-        if (error) throw new Error(error);
+        if (error) console.log(error);
         ipv4 = body;
         var options = {
             method: 'GET',
             url: 'https://v6.ident.me/'
         }
         request(options, function (error, response, body) {
-            if (error) throw new Error(error);
+            if (error) console.log(error);
             ipv6 = body;
             options = {
                 method: 'GET',
@@ -54,7 +54,7 @@ setInterval(() => {
                 }
             };
             request(options, function (error, response, body) {
-                if (error) throw new Error(error);
+                if (error) console.log(error);
                 dns = JSON.parse(body);
                 dnsarray = dns.result;
                 dnsarray.forEach(function (dnsentry) {
@@ -80,7 +80,7 @@ setInterval(() => {
                             json: true
                         };
                         request(options, function (error, response, body) {
-                            if (error) throw new Error(error);
+                            if (error) console.log(error);
                             if(body.errors[0] == undefined){
                                 console.log('A Record Updated...');
                             }else{
@@ -110,7 +110,7 @@ setInterval(() => {
                             json: true
                         };
                         request(options, function (error, response, body) {
-                            if (error) throw new Error(error);
+                            if (error) console.log(error);
                             if(body.errors[0] == undefined){
                                 console.log('AAAA Record Updated...');
                             }else{
