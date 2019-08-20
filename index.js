@@ -14,12 +14,12 @@ intervalmin = parseInt(process.env.interval, 10);
 //IPv6
 ipv6active = process.env.ipv6activate;
 //Update DNS Entry
-if(proxied == 'true'){
+if (proxied == 'true') {
     proxied = true;
-}else{
+} else {
     proxied = false;
 }
-if(intervalmin < 2){
+if (intervalmin < 2) {
     intervalmin = 2;
 }
 setInterval(() => {
@@ -37,7 +37,10 @@ setInterval(() => {
         ipv4 = body;
         var options = {
             method: 'GET',
-            url: 'https://v6.ident.me/'
+            url: 'https://v6.ident.me/',
+            maxAttempts: 5,
+            retryDelay: 5000,
+            retrySrategy: request.RetryStrategies.HTTPOrNetworkError
         }
         request(options, function (error, response, body) {
             if (error) console.log(error);
@@ -51,7 +54,10 @@ setInterval(() => {
                     'X-Auth-Key': api_token,
                     'X-Auth-Email': mail_address,
                     'Content-Type': 'application/json'
-                }
+                },
+                maxAttempts: 5,
+                retryDelay: 5000,
+                retrySrategy: request.RetryStrategies.HTTPOrNetworkError
             };
             request(options, function (error, response, body) {
                 if (error) console.log(error);
@@ -74,16 +80,19 @@ setInterval(() => {
                                 type: 'A',
                                 name: domain,
                                 content: ipv4,
-                                ttl: intervalmin*60,
+                                ttl: intervalmin * 60,
                                 proxied: proxied
                             },
-                            json: true
+                            json: true,
+                            maxAttempts: 5,
+                            retryDelay: 5000,
+                            retrySrategy: request.RetryStrategies.HTTPOrNetworkError
                         };
                         request(options, function (error, response, body) {
                             if (error) console.log(error);
-                            if(body.errors[0] == undefined){
+                            if (body.errors[0] == undefined) {
                                 console.log('A Record Updated...');
-                            }else{
+                            } else {
                                 console.log(body.errors[0]);
                             }
                         })
@@ -104,16 +113,19 @@ setInterval(() => {
                                 type: 'AAAA',
                                 name: domain,
                                 content: ipv6,
-                                ttl: intervalmin*60,
+                                ttl: intervalmin * 60,
                                 proxied: proxied
                             },
-                            json: true
+                            json: true,
+                            maxAttempts: 5,
+                            retryDelay: 5000,
+                            retrySrategy: request.RetryStrategies.HTTPOrNetworkError
                         };
                         request(options, function (error, response, body) {
                             if (error) console.log(error);
-                            if(body.errors[0] == undefined){
+                            if (body.errors[0] == undefined) {
                                 console.log('AAAA Record Updated...');
-                            }else{
+                            } else {
                                 console.log(body.errors[0]);
                             }
                         })
