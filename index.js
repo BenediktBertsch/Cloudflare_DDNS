@@ -2,7 +2,7 @@
 //Easy A Record Update Script for Cloudflare written by Benedikt Bertsch
 //
 //Libraries
-const request = require('request');
+const request = require('requestretry');
 //Docker variables
 //IPv4
 api_token = process.env.token;
