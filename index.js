@@ -38,8 +38,8 @@ setInterval(() => {
         var options = {
             method: 'GET',
             url: 'https://v6.ident.me/',
-            maxAttempts: 5,
-            retryDelay: 5000,
+            maxAttempts: 30,
+            retryDelay: 10000,
             retrySrategy: request.RetryStrategies.HTTPOrNetworkError
         }
         request(options, function (error, response, body) {
@@ -55,8 +55,8 @@ setInterval(() => {
                     'X-Auth-Email': mail_address,
                     'Content-Type': 'application/json'
                 },
-                maxAttempts: 5,
-                retryDelay: 5000,
+                maxAttempts: 30,
+                retryDelay: 10000,
                 retrySrategy: request.RetryStrategies.HTTPOrNetworkError
             };
             request(options, function (error, response, body) {
@@ -84,8 +84,8 @@ setInterval(() => {
                                 proxied: proxied
                             },
                             json: true,
-                            maxAttempts: 5,
-                            retryDelay: 5000,
+                            maxAttempts: 30,
+                            retryDelay: 10000,
                             retrySrategy: request.RetryStrategies.HTTPOrNetworkError
                         };
                         request(options, function (error, response, body) {
@@ -117,8 +117,8 @@ setInterval(() => {
                                 proxied: proxied
                             },
                             json: true,
-                            maxAttempts: 5,
-                            retryDelay: 5000,
+                            maxAttempts: 30,
+                            retryDelay: 10000,
                             retrySrategy: request.RetryStrategies.HTTPOrNetworkError
                         };
                         request(options, function (error, response, body) {
