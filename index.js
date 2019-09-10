@@ -13,6 +13,9 @@ proxied = process.env.proxied;
 intervalmin = parseInt(process.env.interval, 10);
 //IPv6
 ipv6active = process.env.ipv6activate;
+//Retry Parameters
+retryattemps = parseInt(process.env.retry, 10);
+retrydelays = pareseInt(process.env.delay, 10);
 //Update DNS Entry
 if (proxied == 'true') {
     proxied = true;
@@ -38,8 +41,8 @@ setInterval(() => {
         var options = {
             method: 'GET',
             url: 'https://v6.ident.me/',
-            maxAttempts: 30,
-            retryDelay: 10000,
+            maxAttempts: retryattemps,
+            retryDelay: retrydelays,
             retrySrategy: request.RetryStrategies.HTTPOrNetworkError
         }
         request(options, function (error, response, body) {
@@ -55,8 +58,8 @@ setInterval(() => {
                     'X-Auth-Email': mail_address,
                     'Content-Type': 'application/json'
                 },
-                maxAttempts: 30,
-                retryDelay: 10000,
+                maxAttempts: retryattemps,
+                retryDelay: retrydelays,
                 retrySrategy: request.RetryStrategies.HTTPOrNetworkError
             };
             request(options, function (error, response, body) {
@@ -84,8 +87,8 @@ setInterval(() => {
                                 proxied: proxied
                             },
                             json: true,
-                            maxAttempts: 30,
-                            retryDelay: 10000,
+                            maxAttempts: retryattemps,
+                            retryDelay: retrydelays,
                             retrySrategy: request.RetryStrategies.HTTPOrNetworkError
                         };
                         request(options, function (error, response, body) {
@@ -117,8 +120,8 @@ setInterval(() => {
                                 proxied: proxied
                             },
                             json: true,
-                            maxAttempts: 30,
-                            retryDelay: 10000,
+                            maxAttempts: retryattemps,
+                            retryDelay: retrydelays,
                             retrySrategy: request.RetryStrategies.HTTPOrNetworkError
                         };
                         request(options, function (error, response, body) {
