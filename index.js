@@ -15,7 +15,7 @@ intervalmin = parseInt(process.env.interval, 10);
 ipv6active = process.env.ipv6activate;
 //Retry Parameters
 retryattemps = parseInt(process.env.retry, 10);
-retrydelays = pareseInt(process.env.delay, 10);
+retrydelays = parseInt(process.env.delay, 10);
 //Update DNS Entry
 if (proxied == 'true') {
     proxied = true;
