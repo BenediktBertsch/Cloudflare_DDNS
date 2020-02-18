@@ -9,8 +9,6 @@ An NodeJS application to update your A and AAAA DNS records.
 
 ## How to use this Docker Image
 There are several docker extra parameters to setup this container: 
-* retry = sets how often the App retries to connect to an API
-* delay = sets the time between each retry
 * token = sets your API Token
 * mail = sets your E-Mail address
 * zone = sets your DNS zone 
