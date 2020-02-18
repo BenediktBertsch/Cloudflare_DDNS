@@ -11,6 +11,6 @@ ENV ipv6activate =
 WORKDIR /nodeapp
 COPY package.json /nodeapp
 COPY tsconfig.json /nodeapp
-COPY /dist /nodeapp
+ADD dist /nodeapp/dist
 RUN npm install
 CMD ["npm", "start"]
