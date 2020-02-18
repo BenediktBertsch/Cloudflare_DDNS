@@ -4,7 +4,11 @@
   "description": "cloudflare dddns updater",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --init",
+    "dev": "tsnd --respawn src/index.ts",
+    "start": "node ./dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -21,7 +25,11 @@
   },
   "homepage": "https://github.com/BenediktBertsch/cloudflare_ddns#readme",
   "dependencies": {
-    "request": "^2.88.0",
-    "requestretry": "^4.0.0"
+    "@types/node": "^13.7.1",
+    "axios": "^0.19.2"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^1.0.0-pre.44",
+    "typescript": "^3.7.5"
   }
 }

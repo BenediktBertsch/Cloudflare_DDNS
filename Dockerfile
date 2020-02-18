@@ -6,12 +6,11 @@ ENV zone =
 ENV domain = 
 ENV proxied = 
 ENV interval = 
-ENV ipv6activate = 
-ENV retry = 
-ENV delay = 
+ENV ipv6activate =
 
 WORKDIR /nodeapp
 COPY package.json /nodeapp
-COPY index.js /nodeapp
-RUN npm install --prod
-CMD ["node", "index.js"]
+COPY tsconfig.json /nodeapp
+COPY /dist /nodeapp
+RUN npm install
+CMD ["npm", "start"]
