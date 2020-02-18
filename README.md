@@ -20,4 +20,4 @@ There are several docker extra parameters to setup this container:
 Necessary to run the docker are: token, mail, zone, domain, proxied, interval, retry and delay.
 
 ## Credits
-[Request](https://github.com/request/request), awesome HTTP Client library!
+[Axios](https://github.com/axios/axios), awesome HTTP Client library!
