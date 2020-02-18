@@ -17,7 +17,7 @@ There are several docker extra parameters to setup this container:
 * interval = every x minutes to check your DNS settings, minimum 2.
 * ipv6activate = You want to update your AAAA aswell? Set this to true.
 
-Necessary to run the docker are: token, mail, zone, domain, proxied, interval, retry and delay.
+Necessary to run the docker are: token, mail, zone, domain, proxied and interval.
 
 ## Credits
 [Axios](https://github.com/axios/axios), awesome HTTP Client library!
