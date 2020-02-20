@@ -99,6 +99,8 @@ function main() {
                     _a.label = 6;
                 case 6:
                     if (!(ipv6active && ipv6 != searchRecordIP(dnsarray, 'AAAA'))) return [3 /*break*/, 8];
+                    console.log("Current IP: " + ipv6);
+                    console.log("Cf IP: " + searchRecordIP(dnsarray, 'AAAA'));
                     return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', "PUT", 'api.cloudflare.com', api_token, mail_address, 'AAAA', name, '2003:e2:bf3c:a985:eda4:ccf5:2fde:dd33', 120, proxied, dnsarray)];
                 case 7:
                     ipv6updatemsg = _a.sent();

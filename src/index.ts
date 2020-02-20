@@ -59,6 +59,8 @@ async function main() {
             }
         }
         if (ipv6active && ipv6 != searchRecordIP(dnsarray, 'AAAA')) {
+            console.log("Current IP: " + ipv6)
+            console.log("Cf IP: " + searchRecordIP(dnsarray, 'AAAA'))
             let ipv6updatemsg: AxiosResponse = await UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', "PUT", 'api.cloudflare.com', api_token, mail_address, 'AAAA', name, '2003:e2:bf3c:a985:eda4:ccf5:2fde:dd33', 120, proxied, dnsarray)
             if (ipv6updatemsg.data.success) {
                 console.log("AAAA Record Updated")
