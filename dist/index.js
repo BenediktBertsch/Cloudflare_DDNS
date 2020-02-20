@@ -42,14 +42,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
 //Docker Variables
 //IPv4
-var api_token = [process.env.token];
-var mail_address = [process.env.mail];
-var zone_identifier = [process.env.zone];
-var name = [process.env.domain];
-var proxied = [process.env.proxied];
+var api_token = process.env.token;
+var mail_address = process.env.mail;
+var zone_identifier = process.env.zone;
+var name = process.env.domain;
+var proxied = process.env.proxied;
 var intervalmin = parseInt(process.env.interval, 10);
+var ipv6active;
 //IPv6
-var ipv6active = [process.env.ipv6activate];
+if (process.env.ipv6activate == "true" || process.env.ipv6activate == "TRUE") {
+    ipv6active = true;
+}
+else {
+    ipv6active = false;
+}
 //Start Program
 main();
 setInterval(function () {
@@ -72,12 +78,12 @@ function main() {
                     _a.label = 3;
                 case 3:
                     if (!(i < api_token.length)) return [3 /*break*/, 9];
-                    return [4 /*yield*/, HttpGetAndParams('https://api.cloudflare.com/client/v4/zones/' + zone_identifier[i] + '/dns_records', 'api.cloudflare.com', api_token[i], mail_address[i])];
+                    return [4 /*yield*/, HttpGetAndParams('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records', 'api.cloudflare.com', api_token, mail_address)];
                 case 4:
                     cf = _a.sent();
                     dnsarray = cf.data.result;
                     if (!(ipv4 != searchRecordIP(dnsarray, 'A'))) return [3 /*break*/, 6];
-                    return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier[i] + '/dns_records/', "PUT", 'api.cloudflare.com', api_token[i], mail_address[i], 'A', name[i], '91.23.87.106', 120, proxied[i], dnsarray)];
+                    return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', "PUT", 'api.cloudflare.com', api_token, mail_address, 'A', name, '91.23.87.106', 120, proxied, dnsarray)];
                 case 5:
                     ipv4updatemsg = _a.sent();
                     if (ipv4updatemsg.data.success) {
@@ -86,7 +92,7 @@ function main() {
                     _a.label = 6;
                 case 6:
                     if (!(ipv6active && ipv6 != searchRecordIP(dnsarray, 'AAAA'))) return [3 /*break*/, 8];
-                    return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier[i] + '/dns_records/', "PUT", 'api.cloudflare.com', api_token[i], mail_address[i], 'AAAA', name[i], '2003:e2:bf3c:a985:eda4:ccf5:2fde:dd33', 120, proxied[i], dnsarray)];
+                    return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', "PUT", 'api.cloudflare.com', api_token, mail_address, 'AAAA', name, '2003:e2:bf3c:a985:eda4:ccf5:2fde:dd33', 120, proxied, dnsarray)];
                 case 7:
                     ipv6updatemsg = _a.sent();
                     if (ipv6updatemsg.data.success) {
