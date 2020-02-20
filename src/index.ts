@@ -2,14 +2,20 @@ import axios, { AxiosResponse } from 'axios';
 import { ICloudflareEntry } from './models/cloudflare-dns.model';
 //Docker Variables
 //IPv4
-let api_token: string[] = [process.env.token];
-let mail_address: string[] = [process.env.mail];
-let zone_identifier: string[] = [process.env.zone];
-let name: string[] = [process.env.domain];
-let proxied: boolean[] = [process.env.proxied];
-let intervalmin: number = parseInt(process.env.interval, 10);
+let api_token:string = process.env.token;
+let mail_address:string = process.env.mail;
+let zone_identifier:string = process.env.zone;
+let name:string = process.env.domain;
+let proxied:string = process.env.proxied;
+let intervalmin:number = parseInt(process.env.interval, 10);
+let ipv6active:boolean;
 //IPv6
-let ipv6active: boolean[] = [process.env.ipv6activate];
+if(process.env.ipv6activate == "true" || process.env.ipv6activate == "TRUE"){
+    ipv6active = true;
+}
+else{
+    ipv6active = false
+}
 
 //Start Program
 main();
@@ -23,16 +29,16 @@ async function main() {
     let ipv4: string = await HttpGet('https://v4.ident.me/');
     let ipv6: string = await HttpGet('https://v6.ident.me/');
     for (let i = 0; i < api_token.length; i++) {
-        let cf: AxiosResponse = await HttpGetAndParams('https://api.cloudflare.com/client/v4/zones/' + zone_identifier[i] + '/dns_records', 'api.cloudflare.com', api_token[i], mail_address[i])
+        let cf: AxiosResponse = await HttpGetAndParams('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records', 'api.cloudflare.com', api_token, mail_address)
         let dnsarray: ICloudflareEntry[] = cf.data.result;
         if (ipv4 != searchRecordIP(dnsarray, 'A')) {
-            let ipv4updatemsg: AxiosResponse = await UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier[i] + '/dns_records/', "PUT", 'api.cloudflare.com', api_token[i], mail_address[i], 'A', name[i], '91.23.87.106', 120, proxied[i], dnsarray)
+            let ipv4updatemsg: AxiosResponse = await UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', "PUT", 'api.cloudflare.com', api_token, mail_address, 'A', name, '91.23.87.106', 120, proxied, dnsarray)
             if (ipv4updatemsg.data.success) {
                 console.log("A Record Updated")
             }
         }
         if (ipv6active && ipv6 != searchRecordIP(dnsarray, 'AAAA')) {
-            let ipv6updatemsg: AxiosResponse = await UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier[i] + '/dns_records/', "PUT", 'api.cloudflare.com', api_token[i], mail_address[i], 'AAAA', name[i], '2003:e2:bf3c:a985:eda4:ccf5:2fde:dd33', 120, proxied[i], dnsarray)
+            let ipv6updatemsg: AxiosResponse = await UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', "PUT", 'api.cloudflare.com', api_token, mail_address, 'AAAA', name, '2003:e2:bf3c:a985:eda4:ccf5:2fde:dd33', 120, proxied, dnsarray)
             if (ipv6updatemsg.data.success) {
                 console.log("AAAA Record Updated")
             }
