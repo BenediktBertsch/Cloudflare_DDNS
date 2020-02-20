@@ -46,7 +46,14 @@ var api_token = process.env.token;
 var mail_address = process.env.mail;
 var zone_identifier = process.env.zone;
 var name = process.env.domain;
-var proxied = process.env.proxied;
+//Proxied
+var proxied;
+if (process.env.proxied == "true" || process.env.proxied == "TRUE") {
+    proxied = true;
+}
+else {
+    proxied = false;
+}
 var intervalmin = parseInt(process.env.interval, 10);
 var ipv6active;
 //IPv6

@@ -1,12 +1,33 @@
 import axios, { AxiosResponse } from 'axios';
 import { ICloudflareEntry } from './models/cloudflare-dns.model';
+
+declare var process : {
+    env: {
+      token: string,
+      mail: string,
+      zone: string,
+      domain: string,
+      proxied: string,
+      interval: string,
+      ipv6activate: string
+    }
+  }
+
 //Docker Variables
 //IPv4
 let api_token:string = process.env.token;
 let mail_address:string = process.env.mail;
 let zone_identifier:string = process.env.zone;
 let name:string = process.env.domain;
-let proxied:string = process.env.proxied;
+//Proxied
+let proxied:boolean;
+if(process.env.proxied == "true" || process.env.proxied == "TRUE"){
+    proxied = true;
+}
+else{
+    proxied = false
+}
+
 let intervalmin:number = parseInt(process.env.interval, 10);
 let ipv6active:boolean;
 //IPv6
