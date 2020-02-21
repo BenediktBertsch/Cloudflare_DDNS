@@ -89,10 +89,8 @@ function main() {
                 case 4:
                     cf = _a.sent();
                     dnsarray = cf.data.result;
-                    console.log(searchRecordIP(dnsarray, 'A'));
-                    console.log(ipv4);
                     if (!(ipv4 != searchRecordIP(dnsarray, 'A'))) return [3 /*break*/, 6];
-                    return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', 'api.cloudflare.com', api_token, mail_address, 'A', name, '91.23.87.106', 120, proxied, dnsarray)];
+                    return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', 'api.cloudflare.com', api_token, mail_address, 'A', name, ipv4, 120, proxied, dnsarray)];
                 case 5:
                     ipv4updatemsg = _a.sent();
                     if (ipv4updatemsg.data.success) {
@@ -101,7 +99,7 @@ function main() {
                     _a.label = 6;
                 case 6:
                     if (!(ipv6active && ipv6 != searchRecordIP(dnsarray, 'AAAA'))) return [3 /*break*/, 8];
-                    return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', 'api.cloudflare.com', api_token, mail_address, 'AAAA', name, '2003:e2:bf3c:a985:eda4:ccf5:2fde:dd33', 120, proxied, dnsarray)];
+                    return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', 'api.cloudflare.com', api_token, mail_address, 'AAAA', name, ipv6, 120, proxied, dnsarray)];
                 case 7:
                     ipv6updatemsg = _a.sent();
                     if (ipv6updatemsg.data.success) {
