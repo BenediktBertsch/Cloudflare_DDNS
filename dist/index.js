@@ -90,6 +90,7 @@ function main() {
                     cf = _a.sent();
                     dnsarray = cf.data.result;
                     console.log(searchRecordIP(dnsarray, 'A'));
+                    console.log(ipv4);
                     if (!(ipv4 != searchRecordIP(dnsarray, 'A'))) return [3 /*break*/, 6];
                     return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', 'api.cloudflare.com', api_token, mail_address, 'A', name, '91.23.87.106', 120, proxied, dnsarray)];
                 case 5:
@@ -103,7 +104,6 @@ function main() {
                     return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', 'api.cloudflare.com', api_token, mail_address, 'AAAA', name, '2003:e2:bf3c:a985:eda4:ccf5:2fde:dd33', 120, proxied, dnsarray)];
                 case 7:
                     ipv6updatemsg = _a.sent();
-                    console.log(ipv6updatemsg);
                     if (ipv6updatemsg.data.success) {
                         console.log("AAAA Record Updated");
                     }
