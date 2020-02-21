@@ -53,15 +53,15 @@ async function main() {
         let cf: AxiosResponse = await HttpGetAndParams('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records', 'api.cloudflare.com', api_token, mail_address)
         let dnsarray: ICloudflareEntry[] = cf.data.result;
         if (ipv4 != searchRecordIP(dnsarray, 'A')) {
-            let ipv4updatemsg: AxiosResponse = await UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', "PUT", 'api.cloudflare.com', api_token, mail_address, 'A', name, '91.23.87.106', 120, proxied, dnsarray)
+            let ipv4updatemsg: AxiosResponse = await UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', 'api.cloudflare.com', api_token, mail_address, 'A', name, '91.23.87.106', 120, proxied, dnsarray)
+            console.log(ipv4updatemsg)
             if (ipv4updatemsg.data.success) {
                 console.log("A Record Updated")
             }
         }
         if (ipv6active && ipv6 != searchRecordIP(dnsarray, 'AAAA')) {
-            console.log("Current IP: " + ipv6)
-            console.log("Cf IP: " + searchRecordIP(dnsarray, 'AAAA'))
-            let ipv6updatemsg: AxiosResponse = await UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', "PUT", 'api.cloudflare.com', api_token, mail_address, 'AAAA', name, '2003:e2:bf3c:a985:eda4:ccf5:2fde:dd33', 120, proxied, dnsarray)
+            let ipv6updatemsg: AxiosResponse = await UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', 'api.cloudflare.com', api_token, mail_address, 'AAAA', name, '2003:e2:bf3c:a985:eda4:ccf5:2fde:dd33', 120, proxied, dnsarray)
+            console.log(ipv6updatemsg)
             if (ipv6updatemsg.data.success) {
                 console.log("AAAA Record Updated")
             }
@@ -93,7 +93,7 @@ async function HttpGetAndParams(url: string, Host: string, auth_key: string, aut
     })
 }
 
-async function UpdateIP(url: string, method: any, Host: string, auth_key: string, auth_mail: string, type: string, name: string, ipv4: string, ttl: number, proxied: boolean, recordarray: ICloudflareEntry[]): Promise<AxiosResponse> {
+async function UpdateIP(url: string, Host: string, auth_key: string, auth_mail: string, type: string, name: string, ipv4: string, ttl: number, proxied: boolean, recordarray: ICloudflareEntry[]): Promise<AxiosResponse> {
     return axios.put(url + searchRecordID(recordarray, type), {
         type,
         name,

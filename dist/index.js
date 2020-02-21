@@ -90,20 +90,20 @@ function main() {
                     cf = _a.sent();
                     dnsarray = cf.data.result;
                     if (!(ipv4 != searchRecordIP(dnsarray, 'A'))) return [3 /*break*/, 6];
-                    return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', "PUT", 'api.cloudflare.com', api_token, mail_address, 'A', name, '91.23.87.106', 120, proxied, dnsarray)];
+                    return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', 'api.cloudflare.com', api_token, mail_address, 'A', name, '91.23.87.106', 120, proxied, dnsarray)];
                 case 5:
                     ipv4updatemsg = _a.sent();
+                    console.log(ipv4updatemsg);
                     if (ipv4updatemsg.data.success) {
                         console.log("A Record Updated");
                     }
                     _a.label = 6;
                 case 6:
                     if (!(ipv6active && ipv6 != searchRecordIP(dnsarray, 'AAAA'))) return [3 /*break*/, 8];
-                    console.log("Current IP: " + ipv6);
-                    console.log("Cf IP: " + searchRecordIP(dnsarray, 'AAAA'));
-                    return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', "PUT", 'api.cloudflare.com', api_token, mail_address, 'AAAA', name, '2003:e2:bf3c:a985:eda4:ccf5:2fde:dd33', 120, proxied, dnsarray)];
+                    return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', 'api.cloudflare.com', api_token, mail_address, 'AAAA', name, '2003:e2:bf3c:a985:eda4:ccf5:2fde:dd33', 120, proxied, dnsarray)];
                 case 7:
                     ipv6updatemsg = _a.sent();
+                    console.log(ipv6updatemsg);
                     if (ipv6updatemsg.data.success) {
                         console.log("AAAA Record Updated");
                     }
@@ -147,7 +147,7 @@ function HttpGetAndParams(url, Host, auth_key, auth_mail) {
         });
     });
 }
-function UpdateIP(url, method, Host, auth_key, auth_mail, type, name, ipv4, ttl, proxied, recordarray) {
+function UpdateIP(url, Host, auth_key, auth_mail, type, name, ipv4, ttl, proxied, recordarray) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             return [2 /*return*/, axios_1.default.put(url + searchRecordID(recordarray, type), {
