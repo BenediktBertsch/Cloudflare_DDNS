@@ -52,9 +52,9 @@ async function main() {
     for (let i = 0; i < api_token.length; i++) {
         let cf: AxiosResponse = await HttpGetAndParams('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records', 'api.cloudflare.com', api_token, mail_address)
         let dnsarray: ICloudflareEntry[] = cf.data.result;
+        console.log(searchRecordIP(dnsarray, 'A'))
         if (ipv4 != searchRecordIP(dnsarray, 'A')) {
             let ipv4updatemsg: AxiosResponse = await UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', 'api.cloudflare.com', api_token, mail_address, 'A', name, '91.23.87.106', 120, proxied, dnsarray)
-            console.log(ipv4updatemsg)
             if (ipv4updatemsg.data.success) {
                 console.log("A Record Updated")
             }

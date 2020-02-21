@@ -89,11 +89,11 @@ function main() {
                 case 4:
                     cf = _a.sent();
                     dnsarray = cf.data.result;
+                    console.log(searchRecordIP(dnsarray, 'A'));
                     if (!(ipv4 != searchRecordIP(dnsarray, 'A'))) return [3 /*break*/, 6];
                     return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', 'api.cloudflare.com', api_token, mail_address, 'A', name, '91.23.87.106', 120, proxied, dnsarray)];
                 case 5:
                     ipv4updatemsg = _a.sent();
-                    console.log(ipv4updatemsg);
                     if (ipv4updatemsg.data.success) {
                         console.log("A Record Updated");
                     }
