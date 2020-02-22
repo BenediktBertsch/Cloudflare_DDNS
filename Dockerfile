@@ -12,7 +12,7 @@ WORKDIR /nodeapp
 COPY package.json /nodeapp
 COPY tsconfig.json /nodeapp
 ADD dist /nodeapp/dist
-VOLUME [ "/config" ]
+VOLUME [/config]
 COPY src/config.json /nodeapp/dist
 RUN npm install
 CMD ["npm", "start"]
