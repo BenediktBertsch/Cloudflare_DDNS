@@ -23,31 +23,27 @@ fs.exists('/config/config.json', (value: boolean) => {
 
 //Check if configurated
 let counter:number = 0;
-if (config.token.length == 1) {
+if (config.token.length == 1 || config.token.length == undefined) {
     console.log("Please set an API-Token ex: 'tokens': ['tokeninput']")
     counter++;
 }
-if (config.mails.length == 1) {
+if (config.mails.length == 1 || config.mails.length == undefined) {
     console.log("Please set a Mail ex: 'mails': ['test@test.com']")
     counter++;
 }
-if (config.zones.length == 1) {
+if (config.zones.length == 1 || config.zones.length == undefined) {
     console.log("Please set a Cloudflare Zone ex: 'zones': ['zone']")
     counter++;
 }
-if (config.domains.length == 1) {
+if (config.domains.length == 1 || config.domains.length == undefined) {
     console.log("Please set a domain ex: 'domains': ['example.com']")
     counter++;
 }
-if (config.proxies.length == 1) {
+if (config.proxies.length == 1 || config.proxies.length == undefined) {
     console.log("Please set if the records are proxied by Cloudflare ex: 'proxies': [true] // or false")
     counter++;
 }
-if (config.ipv6active.length == 1) {
-    console.log("Please set if only IPv4 records are updated or IPv6 also ex: 'ipv6active': [true] // or false")
-    counter++;
-}
-if (config.ipv6active.length == 1) {
+if (config.ipv6active.length == 1 || config.ipv6active.length == undefined) {
     console.log("Please set if only IPv4 records are updated or IPv6 also ex: 'ipv6active': [true] // or false")
     counter++;
 }
