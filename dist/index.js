@@ -43,18 +43,6 @@ var axios_1 = __importDefault(require("axios"));
 var fs_1 = __importDefault(require("fs"));
 var config = require('./config.json');
 //Config copy if doenst exists on config volume
-fs_1.default.readdir('/nodeapp/dist', function (err, items) {
-    console.log(items);
-    for (var i = 0; i < items.length; i++) {
-        console.log(items[i]);
-    }
-});
-fs_1.default.readdir('/config', function (err, items) {
-    console.log(items);
-    for (var i = 0; i < items.length; i++) {
-        console.log(items[i]);
-    }
-});
 fs_1.default.exists('/config/config.json', function (value) {
     if (value == false) {
         fs_1.default.copyFile('/nodeapp/dist/config.json', '/config/config.json', function (err) {
@@ -65,6 +53,39 @@ fs_1.default.exists('/config/config.json', function (value) {
         });
     }
 });
+//Check if configurated
+var counter = 0;
+if (config.token.length == 1) {
+    console.log("Please set an API-Token ex: 'tokens': ['tokeninput']");
+    counter++;
+}
+if (config.mails.length == 1) {
+    console.log("Please set a Mail ex: 'mails': ['test@test.com']");
+    counter++;
+}
+if (config.zones.length == 1) {
+    console.log("Please set a Cloudflare Zone ex: 'zones': ['zone']");
+    counter++;
+}
+if (config.domains.length == 1) {
+    console.log("Please set a domain ex: 'domains': ['example.com']");
+    counter++;
+}
+if (config.proxies.length == 1) {
+    console.log("Please set if the records are proxied by Cloudflare ex: 'proxies': [true] // or false");
+    counter++;
+}
+if (config.ipv6active.length == 1) {
+    console.log("Please set if only IPv4 records are updated or IPv6 also ex: 'ipv6active': [true] // or false");
+    counter++;
+}
+if (config.ipv6active.length == 1) {
+    console.log("Please set if only IPv4 records are updated or IPv6 also ex: 'ipv6active': [true] // or false");
+    counter++;
+}
+if (counter > 0) {
+    process.exit();
+}
 //Docker Variables
 //IPv4
 var api_token = config.token;
