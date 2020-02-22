@@ -42,52 +42,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
 var fs_1 = __importDefault(require("fs"));
 var config = require('./config.json');
-//Check if configurated
-var counter = 0;
-if (config.token == undefined) {
-    console.log("Please set an API-Token ex: 'tokens': ['tokeninput']");
-    counter++;
-}
-if (config.mails == undefined) {
-    console.log("Please set a Mail ex: 'mails': ['test@test.com']");
-    counter++;
-}
-if (config.zones == undefined) {
-    console.log("Please set a Cloudflare Zone ex: 'zones': ['zone']");
-    counter++;
-}
-if (config.domains == undefined) {
-    console.log("Please set a domain ex: 'domains': ['example.com']");
-    counter++;
-}
-if (config.proxies == undefined) {
-    console.log("Please set if the records are proxied by Cloudflare ex: 'proxies': [true] // or false");
-    counter++;
-}
-if (config.ipv6active == undefined) {
-    console.log("Please set if only IPv4 records are updated or IPv6 also ex: 'ipv6active': [true] // or false");
-    counter++;
-}
-//Config copy if doenst exists on config volume
-fs_1.default.exists('/config/config.json', function (value) {
-    console.log(value);
-    if (value == false) {
-        fs_1.default.copyFile('/nodeapp/dist/config.json', '/config/config.json', function (err) {
-            if (err) {
-                throw err;
-            }
-            fs_1.default.chmod('/config/config.json', 777, function (err) {
-                if (err) {
-                    throw err;
-                }
-            });
-            console.log('Created Config File.');
-            if (counter > 0) {
-                process.exit();
-            }
-        });
-    }
-});
 //Docker Variables
 //IPv4
 var api_token = config.token;
@@ -99,10 +53,61 @@ var proxied = config.proxies;
 var intervalmin = config.interval;
 var ipv6active = config.ipv6active;
 //Start Program
-main();
-setInterval(function () {
+if (checkconfig()) {
     main();
-}, intervalmin * 1000 * 60);
+    setInterval(function () {
+        main();
+    }, intervalmin * 1000 * 60);
+}
+function checkconfig() {
+    //Config copy if doenst exists on config volume
+    fs_1.default.exists('/config/config.json', function (value) {
+        console.log(value);
+        if (value == false) {
+            fs_1.default.copyFile('/nodeapp/dist/config.json', '/config/config.json', function (err) {
+                if (err) {
+                    throw err;
+                }
+                fs_1.default.chmod('/config/config.json', 777, function (err) {
+                    if (err) {
+                        throw err;
+                    }
+                });
+                console.log('Created Config File.');
+            });
+        }
+        //Check if configurated
+        var counter = 0;
+        if (config.token == undefined) {
+            console.log("Please set an API-Token ex: 'tokens': ['tokeninput']");
+            counter++;
+        }
+        if (config.mails == undefined) {
+            console.log("Please set a Mail ex: 'mails': ['test@test.com']");
+            counter++;
+        }
+        if (config.zones == undefined) {
+            console.log("Please set a Cloudflare Zone ex: 'zones': ['zone']");
+            counter++;
+        }
+        if (config.domains == undefined) {
+            console.log("Please set a domain ex: 'domains': ['example.com']");
+            counter++;
+        }
+        if (config.proxies == undefined) {
+            console.log("Please set if the records are proxied by Cloudflare ex: 'proxies': [true] // or false");
+            counter++;
+        }
+        if (config.ipv6active == undefined) {
+            console.log("Please set if only IPv4 records are updated or IPv6 also ex: 'ipv6active': [true] // or false");
+            counter++;
+        }
+        if (counter > 0) {
+            process.exit();
+        }
+    });
+    return true;
+}
 function main() {
     return __awaiter(this, void 0, void 0, function () {
         var ipv4, ipv6, i, cf, dnsarray, ipv4updatemsg, ipv6updatemsg;

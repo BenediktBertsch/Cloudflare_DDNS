@@ -4,54 +4,6 @@ import { ICloudflareEntry } from './models/cloudflare-dns.model';
 import { IConfig } from './models/config.model';
 const config: IConfig = require('./config.json')
 
-//Check if configurated
-let counter:number = 0;
-if (config.token == undefined) {
-    console.log("Please set an API-Token ex: 'tokens': ['tokeninput']")
-    counter++;
-}
-if (config.mails == undefined) {
-    console.log("Please set a Mail ex: 'mails': ['test@test.com']")
-    counter++;
-}
-if (config.zones == undefined) {
-    console.log("Please set a Cloudflare Zone ex: 'zones': ['zone']")
-    counter++;
-}
-if (config.domains == undefined) {
-    console.log("Please set a domain ex: 'domains': ['example.com']")
-    counter++;
-}
-if (config.proxies == undefined) {
-    console.log("Please set if the records are proxied by Cloudflare ex: 'proxies': [true] // or false")
-    counter++;
-}
-if (config.ipv6active == undefined) {
-    console.log("Please set if only IPv4 records are updated or IPv6 also ex: 'ipv6active': [true] // or false")
-    counter++;
-}
-
-//Config copy if doenst exists on config volume
-fs.exists('/config/config.json', (value: boolean) => {
-    console.log(value)
-    if (value == false) {
-        fs.copyFile('/nodeapp/dist/config.json', '/config/config.json', (err) => {
-            if(err){
-                throw err
-            }
-            fs.chmod('/config/config.json', 777, (err) => {
-                if(err){
-                    throw err
-                }
-            })
-            console.log('Created Config File.')
-            if (counter > 0) {
-                process.exit()
-            }
-        })
-    }
-})
-
 //Docker Variables
 //IPv4
 let api_token: string[] = config.token;
@@ -64,11 +16,62 @@ let intervalmin: number = config.interval;
 let ipv6active: boolean[] = config.ipv6active;
 
 //Start Program
-main();
-setInterval(() => {
+if(checkconfig()){
     main();
-}, intervalmin * 1000 * 60)
+    setInterval(() => {
+        main();
+    }, intervalmin * 1000 * 60)
+}
 
+function checkconfig():boolean {
+    //Config copy if doenst exists on config volume
+    fs.exists('/config/config.json', (value: boolean) => {
+        console.log(value)
+        if (value == false) {
+            fs.copyFile('/nodeapp/dist/config.json', '/config/config.json', (err) => {
+                if (err) {
+                    throw err
+                }
+                fs.chmod('/config/config.json', 777, (err) => {
+                    if (err) {
+                        throw err
+                    }
+                })
+                console.log('Created Config File.')
+            })
+        }
+        //Check if configurated
+        let counter: number = 0;
+        if (config.token == undefined) {
+            console.log("Please set an API-Token ex: 'tokens': ['tokeninput']")
+            counter++;
+        }
+        if (config.mails == undefined) {
+            console.log("Please set a Mail ex: 'mails': ['test@test.com']")
+            counter++;
+        }
+        if (config.zones == undefined) {
+            console.log("Please set a Cloudflare Zone ex: 'zones': ['zone']")
+            counter++;
+        }
+        if (config.domains == undefined) {
+            console.log("Please set a domain ex: 'domains': ['example.com']")
+            counter++;
+        }
+        if (config.proxies == undefined) {
+            console.log("Please set if the records are proxied by Cloudflare ex: 'proxies': [true] // or false")
+            counter++;
+        }
+        if (config.ipv6active == undefined) {
+            console.log("Please set if only IPv4 records are updated or IPv6 also ex: 'ipv6active': [true] // or false")
+            counter++;
+        }
+        if (counter > 0) {
+            process.exit()
+        }
+    })
+    return true
+}
 
 async function main() {
     console.log(new Date().toLocaleString('de-DE', { hour12: false }) + " Checking A and AAAA Records")
