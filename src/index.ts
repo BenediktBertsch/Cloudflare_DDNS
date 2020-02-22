@@ -11,6 +11,11 @@ fs.exists('/config/config.json', (value: boolean) => {
             if(err){
                 throw err
             }
+            fs.chmod('/config/config.json', 777, (err) => {
+                if(err){
+                    throw err
+                }
+            })
             console.log('Created Config File.')
         })
     }

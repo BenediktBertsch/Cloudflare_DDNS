@@ -49,6 +49,11 @@ fs_1.default.exists('/config/config.json', function (value) {
             if (err) {
                 throw err;
             }
+            fs_1.default.chmod('/config/config.json', 777, function (err) {
+                if (err) {
+                    throw err;
+                }
+            });
             console.log('Created Config File.');
         });
     }
