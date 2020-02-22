@@ -57,7 +57,7 @@ fs_1.default.readdir('/config', function (err, items) {
 });
 fs_1.default.exists('/config/config.json', function (value) {
     if (value == false) {
-        fs_1.default.copyFile('./config.json', '/config/config.json', function (err) {
+        fs_1.default.copyFile('/nodeapp/dist/config.json', '/config/config.json', function (err) {
             if (err) {
                 throw err;
             }
