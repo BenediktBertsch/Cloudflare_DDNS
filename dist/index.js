@@ -43,6 +43,18 @@ var axios_1 = __importDefault(require("axios"));
 var fs_1 = __importDefault(require("fs"));
 var config = require('./config.json');
 //Config copy if doenst exists on config volume
+fs_1.default.readdir('/nodeapp/dist', function (err, items) {
+    console.log(items);
+    for (var i = 0; i < items.length; i++) {
+        console.log(items[i]);
+    }
+});
+fs_1.default.readdir('/config', function (err, items) {
+    console.log(items);
+    for (var i = 0; i < items.length; i++) {
+        console.log(items[i]);
+    }
+});
 fs_1.default.exists('/config/config.json', function (value) {
     if (value == false) {
         fs_1.default.copyFile('./config.json', '/config/config.json', function (err) {

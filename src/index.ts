@@ -5,6 +5,20 @@ import { IConfig } from './models/config.model';
 const config: IConfig = require('./config.json')
 
 //Config copy if doenst exists on config volume
+fs.readdir('/nodeapp/dist', function(err, items) {
+    console.log(items);
+ 
+    for (var i=0; i<items.length; i++) {
+        console.log(items[i]);
+    }
+});
+fs.readdir('/config', function(err, items) {
+    console.log(items);
+ 
+    for (var i=0; i<items.length; i++) {
+        console.log(items[i]);
+    }
+});
 fs.exists('/config/config.json', (value: boolean) => {
     if (value == false) {
         fs.copyFile('./config.json', '/config/config.json', (err) => {
