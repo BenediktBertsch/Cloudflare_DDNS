@@ -1,0 +1,9 @@
+{
+    "tokens": ["apitokenfordomain1", "apitokenfordomain2"],
+    "mails": ["cloudflaremail1", "cloudflaremail2"],
+    "zones": ["cloudflarezone1", "cloudflarezone2"],
+    "domains": ["cloudflaredomain1", "cloudflaredomain2"],
+    "proxies": [true, true],
+    "ipv6active": [true, true],
+    "interval": 1
+}

@@ -1,42 +1,31 @@
 import axios, { AxiosResponse } from 'axios';
+import fs from 'fs';
 import { ICloudflareEntry } from './models/cloudflare-dns.model';
+import { IConfig } from './models/config.model';
+const config: IConfig = require('./config.json')
 
-declare var process : {
-    env: {
-      token: string,
-      mail: string,
-      zone: string,
-      domain: string,
-      proxied: string,
-      interval: string,
-      ipv6activate: string
+//Config copy if doenst exists on config volume
+fs.exists('/config/config.json', (value: boolean) => {
+    if (value == false) {
+        fs.copyFile('./config.json', '/config/config.json', (err) => {
+            if(err){
+                throw err
+            }
+            console.log('Created Config File.')
+        })
     }
-  }
+})
 
 //Docker Variables
 //IPv4
-let api_token:string = process.env.token;
-let mail_address:string = process.env.mail;
-let zone_identifier:string = process.env.zone;
-let name:string = process.env.domain;
+let api_token: string[] = config.token;
+let mail_address: string[] = config.mails;
+let zone_identifier: string[] = config.zones;
+let name: string[] = config.domains;
 //Proxied
-let proxied:boolean;
-if(process.env.proxied == "true" || process.env.proxied == "TRUE"){
-    proxied = true;
-}
-else{
-    proxied = false
-}
-
-let intervalmin:number = parseInt(process.env.interval, 10);
-let ipv6active:boolean;
-//IPv6
-if(process.env.ipv6activate == "true" || process.env.ipv6activate == "TRUE"){
-    ipv6active = true;
-}
-else{
-    ipv6active = false
-}
+let proxied: boolean[] = config.proxies;
+let intervalmin: number = config.interval;
+let ipv6active: boolean[] = config.ipv6active;
 
 //Start Program
 main();
@@ -50,16 +39,16 @@ async function main() {
     let ipv4: string = await HttpGet('https://v4.ident.me/');
     let ipv6: string = await HttpGet('https://v6.ident.me/');
     for (let i = 0; i < api_token.length; i++) {
-        let cf: AxiosResponse = await HttpGetAndParams('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records', 'api.cloudflare.com', api_token, mail_address)
+        let cf: AxiosResponse = await HttpGetAndParams('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records', 'api.cloudflare.com', api_token[i], mail_address[i])
         let dnsarray: ICloudflareEntry[] = cf.data.result;
         if (ipv4 != searchRecordIP(dnsarray, 'A')) {
-            let ipv4updatemsg: AxiosResponse = await UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', 'api.cloudflare.com', api_token, mail_address, 'A', name, ipv4, 120, proxied, dnsarray)
+            let ipv4updatemsg: AxiosResponse = await UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', 'api.cloudflare.com', api_token[i], mail_address[i], 'A', name[i], ipv4, 120, proxied[i], dnsarray)
             if (ipv4updatemsg.data.success) {
                 console.log("A Record Updated")
             }
         }
         if (ipv6active && ipv6 != searchRecordIP(dnsarray, 'AAAA')) {
-            let ipv6updatemsg: AxiosResponse = await UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', 'api.cloudflare.com', api_token, mail_address, 'AAAA', name, ipv6, 120, proxied, dnsarray)
+            let ipv6updatemsg: AxiosResponse = await UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier + '/dns_records/', 'api.cloudflare.com', api_token[i], mail_address[i], 'AAAA', name[i], ipv6, 120, proxied[i], dnsarray)
             if (ipv6updatemsg.data.success) {
                 console.log("AAAA Record Updated")
             }
