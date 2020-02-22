@@ -42,22 +42,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
 var fs_1 = __importDefault(require("fs"));
 var config = require('./config.json');
-//Config copy if doenst exists on config volume
-fs_1.default.exists('/config/config.json', function (value) {
-    if (value == false) {
-        fs_1.default.copyFile('/nodeapp/dist/config.json', '/config/config.json', function (err) {
-            if (err) {
-                throw err;
-            }
-            fs_1.default.chmod('/config/config.json', 777, function (err) {
-                if (err) {
-                    throw err;
-                }
-            });
-            console.log('Created Config File.');
-        });
-    }
-});
 //Check if configurated
 var counter = 0;
 if (config.token == undefined) {
@@ -84,9 +68,26 @@ if (config.ipv6active == undefined) {
     console.log("Please set if only IPv4 records are updated or IPv6 also ex: 'ipv6active': [true] // or false");
     counter++;
 }
-if (counter > 0) {
-    process.exit();
-}
+//Config copy if doenst exists on config volume
+fs_1.default.exists('/config/config.json', function (value) {
+    console.log(value);
+    if (value == false) {
+        fs_1.default.copyFile('/nodeapp/dist/config.json', '/config/config.json', function (err) {
+            if (err) {
+                throw err;
+            }
+            fs_1.default.chmod('/config/config.json', 777, function (err) {
+                if (err) {
+                    throw err;
+                }
+            });
+            console.log('Created Config File.');
+            if (counter > 0) {
+                process.exit();
+            }
+        });
+    }
+});
 //Docker Variables
 //IPv4
 var api_token = config.token;

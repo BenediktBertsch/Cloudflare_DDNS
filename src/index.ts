@@ -4,23 +4,6 @@ import { ICloudflareEntry } from './models/cloudflare-dns.model';
 import { IConfig } from './models/config.model';
 const config: IConfig = require('./config.json')
 
-//Config copy if doenst exists on config volume
-fs.exists('/config/config.json', (value: boolean) => {
-    if (value == false) {
-        fs.copyFile('/nodeapp/dist/config.json', '/config/config.json', (err) => {
-            if(err){
-                throw err
-            }
-            fs.chmod('/config/config.json', 777, (err) => {
-                if(err){
-                    throw err
-                }
-            })
-            console.log('Created Config File.')
-        })
-    }
-})
-
 //Check if configurated
 let counter:number = 0;
 if (config.token == undefined) {
@@ -47,9 +30,27 @@ if (config.ipv6active == undefined) {
     console.log("Please set if only IPv4 records are updated or IPv6 also ex: 'ipv6active': [true] // or false")
     counter++;
 }
-if (counter > 0) {
-    process.exit()
-}
+
+//Config copy if doenst exists on config volume
+fs.exists('/config/config.json', (value: boolean) => {
+    console.log(value)
+    if (value == false) {
+        fs.copyFile('/nodeapp/dist/config.json', '/config/config.json', (err) => {
+            if(err){
+                throw err
+            }
+            fs.chmod('/config/config.json', 777, (err) => {
+                if(err){
+                    throw err
+                }
+            })
+            console.log('Created Config File.')
+            if (counter > 0) {
+                process.exit()
+            }
+        })
+    }
+})
 
 //Docker Variables
 //IPv4
