@@ -41,27 +41,28 @@ function checkconfig():boolean {
         }
         //Check if configurated
         let counter: number = 0;
-        if (config.token == undefined) {
+        console.log(api_token)
+        if (api_token == undefined) {
             console.log("Please set an API-Token ex: 'tokens': ['tokeninput']")
             counter++;
         }
-        if (config.mails == undefined) {
+        if (mail_address == undefined) {
             console.log("Please set a Mail ex: 'mails': ['test@test.com']")
             counter++;
         }
-        if (config.zones == undefined) {
+        if (zone_identifier == undefined) {
             console.log("Please set a Cloudflare Zone ex: 'zones': ['zone']")
             counter++;
         }
-        if (config.domains == undefined) {
+        if (name == undefined) {
             console.log("Please set a domain ex: 'domains': ['example.com']")
             counter++;
         }
-        if (config.proxies == undefined) {
+        if (proxied == undefined) {
             console.log("Please set if the records are proxied by Cloudflare ex: 'proxies': [true] // or false")
             counter++;
         }
-        if (config.ipv6active == undefined) {
+        if (ipv6active == undefined) {
             console.log("Please set if only IPv4 records are updated or IPv6 also ex: 'ipv6active': [true] // or false")
             counter++;
         }
