@@ -1,5 +1,5 @@
 export interface IConfig {
-    token:string[];
+    tokens:string[];
     mails:string[];
     zones:string[];
     domains:string[];
