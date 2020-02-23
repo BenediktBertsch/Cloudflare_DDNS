@@ -41,7 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
 var fs_1 = __importDefault(require("fs"));
-var config = require('./config.json');
+var config = require('/config/config.json');
 //Docker Variables
 //IPv4
 var api_token = config.token;
@@ -62,7 +62,6 @@ if (checkconfig()) {
 function checkconfig() {
     //Config copy if doenst exists on config volume
     fs_1.default.exists('/config/config.json', function (value) {
-        console.log(value);
         if (value == false) {
             fs_1.default.copyFile('/nodeapp/dist/config.json', '/config/config.json', function (err) {
                 if (err) {

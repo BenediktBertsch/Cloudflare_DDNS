@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import fs from 'fs';
 import { ICloudflareEntry } from './models/cloudflare-dns.model';
 import { IConfig } from './models/config.model';
-const config: IConfig = require('./config.json')
+const config: IConfig = require('/config/config.json')
 
 //Docker Variables
 //IPv4
@@ -26,7 +26,6 @@ if(checkconfig()){
 function checkconfig():boolean {
     //Config copy if doenst exists on config volume
     fs.exists('/config/config.json', (value: boolean) => {
-        console.log(value)
         if (value == false) {
             fs.copyFile('/nodeapp/dist/config.json', '/config/config.json', (err) => {
                 if (err) {
