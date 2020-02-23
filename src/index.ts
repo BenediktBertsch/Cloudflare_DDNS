@@ -4,26 +4,24 @@ import { ICloudflareEntry } from './models/cloudflare-dns.model';
 import { IConfig } from './models/config.model';
 const config: IConfig = require('/config/config.json')
 
-//Docker Variables
-//IPv4
-let api_token: string[] = config.token;
-let mail_address: string[] = config.mails;
-let zone_identifier: string[] = config.zones;
-let name: string[] = config.domains;
-//Proxied
-let proxied: boolean[] = config.proxies;
+//Values
 let intervalmin: number = config.interval;
-let ipv6active: boolean[] = config.ipv6active;
+let api_token: string[];
+let mail_address: string[];
+let zone_identifier: string[];
+let name: string[];
+let proxied: boolean[];
+let ipv6active: boolean[];
 
 //Start Program
-if(checkconfig()){
+if (checkconfig()) {
     main();
     setInterval(() => {
         main();
     }, intervalmin * 1000 * 60)
 }
 
-function checkconfig():boolean {
+function checkconfig(): boolean {
     //Config copy if doenst exists on config volume
     fs.exists('/config/config.json', (value: boolean) => {
         if (value == false) {
@@ -39,9 +37,19 @@ function checkconfig():boolean {
                 console.log('Created Config File.')
             })
         }
+
+        console.log(config)
+
+        //Set Values
+        api_token = config.token;
+        mail_address = config.mails;
+        zone_identifier = config.zones;
+        name = config.domains;
+        proxied = config.proxies;
+        ipv6active = config.ipv6active;
+
         //Check if configurated
         let counter: number = 0;
-        console.log(api_token)
         if (api_token == undefined) {
             console.log("Please set an API-Token ex: 'tokens': ['tokeninput']")
             counter++;

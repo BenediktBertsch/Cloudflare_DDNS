@@ -42,16 +42,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
 var fs_1 = __importDefault(require("fs"));
 var config = require('/config/config.json');
-//Docker Variables
-//IPv4
-var api_token = config.token;
-var mail_address = config.mails;
-var zone_identifier = config.zones;
-var name = config.domains;
-//Proxied
-var proxied = config.proxies;
+//Values
 var intervalmin = config.interval;
-var ipv6active = config.ipv6active;
+var api_token;
+var mail_address;
+var zone_identifier;
+var name;
+var proxied;
+var ipv6active;
 //Start Program
 if (checkconfig()) {
     main();
@@ -75,9 +73,16 @@ function checkconfig() {
                 console.log('Created Config File.');
             });
         }
+        console.log(config);
+        //Set Values
+        api_token = config.token;
+        mail_address = config.mails;
+        zone_identifier = config.zones;
+        name = config.domains;
+        proxied = config.proxies;
+        ipv6active = config.ipv6active;
         //Check if configurated
         var counter = 0;
-        console.log(api_token);
         if (api_token == undefined) {
             console.log("Please set an API-Token ex: 'tokens': ['tokeninput']");
             counter++;
