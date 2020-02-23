@@ -81,6 +81,7 @@ function checkconfig() {
     proxied = config.proxies;
     ipv6active = config.ipv6active;
     console.log(api_token);
+    console.log(config.token);
     return true;
 }
 function main() {
