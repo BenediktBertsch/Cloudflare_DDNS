@@ -37,15 +37,15 @@ function checkconfig(): boolean {
                 console.log('Created Config File.')
             })
         }
-
-        //Set Values
-        api_token = config.token;
-        mail_address = config.mails;
-        zone_identifier = config.zones;
-        name = config.domains;
-        proxied = config.proxies;
-        ipv6active = config.ipv6active;
     })
+    
+    api_token = config.token;
+    mail_address = config.mails;
+    zone_identifier = config.zones;
+    name = config.domains;
+    proxied = config.proxies;
+    ipv6active = config.ipv6active;
+
     return true
 }
 
