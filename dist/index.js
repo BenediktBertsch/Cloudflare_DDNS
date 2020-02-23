@@ -80,6 +80,7 @@ function checkconfig() {
     name = config.domains;
     proxied = config.proxies;
     ipv6active = config.ipv6active;
+    console.log(api_token.length);
     return true;
 }
 function main() {

@@ -38,14 +38,14 @@ function checkconfig(): boolean {
             })
         }
     })
-    
+
     api_token = config.token;
     mail_address = config.mails;
     zone_identifier = config.zones;
     name = config.domains;
     proxied = config.proxies;
     ipv6active = config.ipv6active;
-
+    console.log(api_token.length)
     return true
 }
 
