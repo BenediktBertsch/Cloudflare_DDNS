@@ -22,14 +22,14 @@ if (checkconfig()) {
 }
 
 function checkconfig(): boolean {
-    //Config copy if doenst exists on config volume
+    //Copy Config if it doesnt exist on volume
     fs.exists('/config/config.json', (value: boolean) => {
         if (value == false) {
             fs.copyFile('/nodeapp/dist/config.json', '/config/config.json', (err) => {
                 if (err) {
                     throw err
                 }
-                fs.chmod('/config/config.json', 777, (err) => {
+                fs.chmod('/config/config.json', '777', (err) => {
                     if (err) {
                         throw err
                     }
@@ -88,14 +88,23 @@ async function main() {
         let dnsarray: ICloudflareEntry[] = cf.data.result;
         if (ipv4 != searchRecordIP(dnsarray, 'A')) {
             let ipv4updatemsg: AxiosResponse = await UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier[i] + '/dns_records/', 'api.cloudflare.com', api_token[i], mail_address[i], 'A', name[i], ipv4, 120, proxied[i], dnsarray)
-            if (ipv4updatemsg.data.success) {
-                console.log("A Record Updated")
+            if(ipv4updatemsg.data.success == undefined){
+                console.log(ipv4updatemsg.data)
+            }else{
+                if (ipv4updatemsg.data.success) {
+                    console.log("A Record Updated")
+                }
             }
+            
         }
         if (ipv6active && ipv6 != searchRecordIP(dnsarray, 'AAAA')) {
             let ipv6updatemsg: AxiosResponse = await UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier[i] + '/dns_records/', 'api.cloudflare.com', api_token[i], mail_address[i], 'AAAA', name[i], ipv6, 120, proxied[i], dnsarray)
-            if (ipv6updatemsg.data.success) {
-                console.log("AAAA Record Updated")
+            if (ipv6updatemsg.data.success == undefined) {
+                console.log(ipv6updatemsg.data)
+            }else{
+                if (ipv6updatemsg.data.success) {
+                    console.log("AAAA Record Updated")
+                }
             }
         }
     }

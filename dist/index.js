@@ -58,14 +58,14 @@ if (checkconfig()) {
     }, intervalmin * 1000 * 60);
 }
 function checkconfig() {
-    //Config copy if doenst exists on config volume
+    //Copy Config if it doesnt exist on volume
     fs_1.default.exists('/config/config.json', function (value) {
         if (value == false) {
             fs_1.default.copyFile('/nodeapp/dist/config.json', '/config/config.json', function (err) {
                 if (err) {
                     throw err;
                 }
-                fs_1.default.chmod('/config/config.json', 777, function (err) {
+                fs_1.default.chmod('/config/config.json', '777', function (err) {
                     if (err) {
                         throw err;
                     }
@@ -137,8 +137,13 @@ function main() {
                     return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier[i] + '/dns_records/', 'api.cloudflare.com', api_token[i], mail_address[i], 'A', name[i], ipv4, 120, proxied[i], dnsarray)];
                 case 5:
                     ipv4updatemsg = _a.sent();
-                    if (ipv4updatemsg.data.success) {
-                        console.log("A Record Updated");
+                    if (ipv4updatemsg.data.success == undefined) {
+                        console.log(ipv4updatemsg.data);
+                    }
+                    else {
+                        if (ipv4updatemsg.data.success) {
+                            console.log("A Record Updated");
+                        }
                     }
                     _a.label = 6;
                 case 6:
@@ -146,8 +151,13 @@ function main() {
                     return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier[i] + '/dns_records/', 'api.cloudflare.com', api_token[i], mail_address[i], 'AAAA', name[i], ipv6, 120, proxied[i], dnsarray)];
                 case 7:
                     ipv6updatemsg = _a.sent();
-                    if (ipv6updatemsg.data.success) {
-                        console.log("AAAA Record Updated");
+                    if (ipv6updatemsg.data.success == undefined) {
+                        console.log(ipv6updatemsg.data);
+                    }
+                    else {
+                        if (ipv6updatemsg.data.success) {
+                            console.log("AAAA Record Updated");
+                        }
                     }
                     _a.label = 8;
                 case 8:
