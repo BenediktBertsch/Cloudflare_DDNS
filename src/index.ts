@@ -38,8 +38,6 @@ function checkconfig(): boolean {
             })
         }
 
-        console.log(config)
-
         //Set Values
         api_token = config.token;
         mail_address = config.mails;
@@ -50,27 +48,27 @@ function checkconfig(): boolean {
 
         //Check if configurated
         let counter: number = 0;
-        if (api_token == undefined) {
+        if (api_token[0] == undefined) {
             console.log("Please set an API-Token ex: 'tokens': ['tokeninput']")
             counter++;
         }
-        if (mail_address == undefined) {
+        if (mail_address[0] == undefined) {
             console.log("Please set a Mail ex: 'mails': ['test@test.com']")
             counter++;
         }
-        if (zone_identifier == undefined) {
+        if (zone_identifier[0] == undefined) {
             console.log("Please set a Cloudflare Zone ex: 'zones': ['zone']")
             counter++;
         }
-        if (name == undefined) {
+        if (name[0] == undefined) {
             console.log("Please set a domain ex: 'domains': ['example.com']")
             counter++;
         }
-        if (proxied == undefined) {
+        if (proxied[0] == undefined) {
             console.log("Please set if the records are proxied by Cloudflare ex: 'proxies': [true] // or false")
             counter++;
         }
-        if (ipv6active == undefined) {
+        if (ipv6active[0] == undefined) {
             console.log("Please set if only IPv4 records are updated or IPv6 also ex: 'ipv6active': [true] // or false")
             counter++;
         }
