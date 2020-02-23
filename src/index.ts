@@ -92,7 +92,7 @@ async function main() {
                 console.log(ipv4updatemsg.data)
             }else{
                 if (ipv4updatemsg.data.success) {
-                    console.log("A Record Updated")
+                    console.log(name[i] + " Record Updated")
                 }
             }
             
@@ -103,7 +103,7 @@ async function main() {
                 console.log(ipv6updatemsg.data)
             }else{
                 if (ipv6updatemsg.data.success) {
-                    console.log("AAAA Record Updated")
+                    console.log(name[i] + " AAAA Record Updated")
                 }
             }
         }

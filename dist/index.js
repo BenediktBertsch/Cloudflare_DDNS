@@ -142,7 +142,7 @@ function main() {
                     }
                     else {
                         if (ipv4updatemsg.data.success) {
-                            console.log("A Record Updated");
+                            console.log(name[i] + " Record Updated");
                         }
                     }
                     _a.label = 6;
@@ -156,7 +156,7 @@ function main() {
                     }
                     else {
                         if (ipv6updatemsg.data.success) {
-                            console.log("AAAA Record Updated");
+                            console.log(name[i] + " AAAA Record Updated");
                         }
                     }
                     _a.label = 8;
