@@ -83,6 +83,7 @@ async function main() {
     console.log(new Date().toLocaleString('de-DE', { hour12: false }) + " Checking A and AAAA Records")
     let ipv4: string = await HttpGet('https://v4.ident.me/');
     let ipv6: string = await HttpGet('https://v6.ident.me/');
+    console.log(ipv6)
     for (let i = 0; i < api_token.length; i++) {
         let cf: AxiosResponse = await HttpGetAndParams('https://api.cloudflare.com/client/v4/zones/' + zone_identifier[i] + '/dns_records', 'api.cloudflare.com', api_token[i], mail_address[i])
         let dnsarray: ICloudflareEntry[] = cf.data.result;

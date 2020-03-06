@@ -125,6 +125,7 @@ function main() {
                     return [4 /*yield*/, HttpGet('https://v6.ident.me/')];
                 case 2:
                     ipv6 = _a.sent();
+                    console.log(ipv6);
                     i = 0;
                     _a.label = 3;
                 case 3:
