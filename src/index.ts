@@ -29,11 +29,7 @@ function checkconfig(): boolean {
                 if (err) {
                     throw err
                 }
-                fs.chmod('/config/config.json', '777', (err) => {
-                    if (err) {
-                        throw err
-                    }
-                })
+                fs.chmodSync('/config/config.json', '777')
                 console.log('Created Config File.')
             })
         }
