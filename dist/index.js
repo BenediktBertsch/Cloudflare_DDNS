@@ -42,20 +42,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
 var fs_1 = __importDefault(require("fs"));
 var config = require('/config/config.json');
-//Values
-var intervalmin = config.interval;
-var api_token;
-var mail_address;
-var zone_identifier;
-var name;
-var proxied;
-var ipv6active;
 //Start Program
 if (checkconfig()) {
     main();
     setInterval(function () {
         main();
-    }, intervalmin * 1000 * 60);
+    }, config.interval * 1000 * 60);
 }
 function checkconfig() {
     //Copy Config if it doesnt exist on volume
@@ -65,49 +57,38 @@ function checkconfig() {
                 if (err) {
                     throw err;
                 }
-                fs_1.default.chmod('/config/config.json', '777', function (err) {
-                    if (err) {
-                        throw err;
-                    }
-                });
+                fs_1.default.chmodSync('/config/config.json', '777');
                 console.log('Created Config File.');
             });
         }
-        //Set Values
-        api_token = config.tokens;
-        mail_address = config.mails;
-        zone_identifier = config.zones;
-        name = config.domains;
-        proxied = config.proxies;
-        ipv6active = config.ipv6active;
         //Check if configurated
         var counter = 0;
-        if (api_token == undefined) {
+        if (config.tokens == undefined) {
             console.log("Please set an API-Token ex: 'tokens': ['tokeninput']");
             counter++;
         }
-        if (mail_address == undefined) {
+        if (config.mails == undefined) {
             console.log("Please set a Mail ex: 'mails': ['test@test.com']");
             counter++;
         }
-        if (zone_identifier == undefined) {
+        if (config.zones == undefined) {
             console.log("Please set a Cloudflare Zone ex: 'zones': ['zone']");
             counter++;
         }
-        if (name == undefined) {
+        if (config.domains == undefined) {
             console.log("Please set a domain ex: 'domains': ['example.com']");
             counter++;
         }
-        if (proxied == undefined) {
+        if (config.proxies == undefined) {
             console.log("Please set if the records are proxied by Cloudflare ex: 'proxies': [true] // or false");
             counter++;
         }
-        if (ipv6active == undefined) {
+        if (config.ipv6active == undefined) {
             console.log("Please set if only IPv4 records are updated or IPv6 also ex: 'ipv6active': [true] // or false");
             counter++;
         }
         if (counter > 0) {
-            process.exit();
+            throw new Error("You need first to set the named parameters before this application can start.");
         }
     });
     return true;
@@ -125,17 +106,17 @@ function main() {
                     return [4 /*yield*/, HttpGet('https://v6.ident.me/')];
                 case 2:
                     ipv6 = _a.sent();
-                    console.log(ipv6);
+                    console.log("Current IPv6: " + ipv6);
                     i = 0;
                     _a.label = 3;
                 case 3:
-                    if (!(i < api_token.length)) return [3 /*break*/, 9];
-                    return [4 /*yield*/, HttpGetAndParams('https://api.cloudflare.com/client/v4/zones/' + zone_identifier[i] + '/dns_records', 'api.cloudflare.com', api_token[i], mail_address[i])];
+                    if (!(i < config.tokens.length)) return [3 /*break*/, 9];
+                    return [4 /*yield*/, HttpGetAndParams('https://api.cloudflare.com/client/v4/zones/' + config.zones[i] + '/dns_records', 'api.cloudflare.com', config.tokens[i], config.mails[i])];
                 case 4:
                     cf = _a.sent();
                     dnsarray = cf.data.result;
                     if (!(ipv4 != searchRecordIP(dnsarray, 'A'))) return [3 /*break*/, 6];
-                    return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier[i] + '/dns_records/', 'api.cloudflare.com', api_token[i], mail_address[i], 'A', name[i], ipv4, 120, proxied[i], dnsarray)];
+                    return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + config.zones[i] + '/dns_records/', 'api.cloudflare.com', config.tokens[i], config.mails[i], 'A', config.domains[i], ipv4, 120, config.proxies[i], dnsarray)];
                 case 5:
                     ipv4updatemsg = _a.sent();
                     if (ipv4updatemsg.data.success == undefined) {
@@ -143,13 +124,13 @@ function main() {
                     }
                     else {
                         if (ipv4updatemsg.data.success) {
-                            console.log(name[i] + " Record Updated");
+                            console.log(config.domains[i] + " Record Updated");
                         }
                     }
                     _a.label = 6;
                 case 6:
-                    if (!(ipv6active && ipv6 != searchRecordIP(dnsarray, 'AAAA'))) return [3 /*break*/, 8];
-                    return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + zone_identifier[i] + '/dns_records/', 'api.cloudflare.com', api_token[i], mail_address[i], 'AAAA', name[i], ipv6, 120, proxied[i], dnsarray)];
+                    if (!(config.ipv6active && ipv6 != searchRecordIP(dnsarray, 'AAAA'))) return [3 /*break*/, 8];
+                    return [4 /*yield*/, UpdateIP('https://api.cloudflare.com/client/v4/zones/' + config.zones[i] + '/dns_records/', 'api.cloudflare.com', config.tokens[i], config.mails[i], 'AAAA', config.domains[i], ipv6, 120, config.proxies[i], dnsarray)];
                 case 7:
                     ipv6updatemsg = _a.sent();
                     if (ipv6updatemsg.data.success == undefined) {
@@ -157,7 +138,7 @@ function main() {
                     }
                     else {
                         if (ipv6updatemsg.data.success) {
-                            console.log(name[i] + " AAAA Record Updated");
+                            console.log(config.domains[i] + " AAAA Record Updated");
                         }
                     }
                     _a.label = 8;
