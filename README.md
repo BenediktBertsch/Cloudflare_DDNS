@@ -1,3 +1,5 @@
+#Deprecated created a new more stable client -> https://github.com/BenediktBertsch/ddns
+
 # Cloudflare DDNS Client
 
 <p align="center">
