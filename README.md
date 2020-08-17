@@ -1,4 +1,4 @@
-#Deprecated created a new more stable client -> https://github.com/BenediktBertsch/ddns
+# Deprecated created a new more stable client -> https://github.com/BenediktBertsch/ddns
 
 # Cloudflare DDNS Client
 
